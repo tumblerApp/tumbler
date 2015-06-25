@@ -1,0 +1,254 @@
+@charset "utf-8";
+/* CSS Document */
+* {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	border: 0;
+	list-style: none;
+	list-style-type:none;
+}
+body {
+	padding: 0;
+	margin: 0;
+	border: 0;
+	background:#333;
+	overflow-y:auto;	
+}
+img {
+	display: block;
+	width: 100%;
+}
+/*背景图自适应
+#background {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: #211f1f;
+	display: none\8;
+	z-index: 1;
+	overflow-y:auto;
+}
+#background .bg-photo {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	display: none;
+	overflow-y:auto;
+	-webkit-background-size: cover !important;
+	-moz-background-size: cover !important;
+	-o-background-size: cover !important;
+	background-size: cover !important;
+}
+#background .bg-photo-1 {
+	background: url(../../images/bg02.jpg) no-repeat center center;
+}
+#background-ie {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height:auto;
+	background-color: #211f1f;
+}
+/*左侧翻页样式*/
+.left {
+	left: 0px;
+	top: 30%;
+	/*margin-top:400px;*/
+	height: 220px;
+	width: 50px;
+	position: fixed;
+	z-index: 999;
+}
+.btu_top {
+	height: 50px;
+	width: 50px;
+	background: url(../../images/top_yc.png) no-repeat;
+	display: block;
+	clear: both;
+	margin: 0 auto;
+}
+.btu_top:hover {
+	filter: alpha(opacity=0.4);
+	opacity: 0.4;
+}
+.home {
+	margin-top: 30px;
+	height: 50px;
+	width: 50px;
+	background: url(../../images/home.png) no-repeat;
+	display: block;
+	clear: both;
+	margin: 0 auto;
+}
+.home:hover {
+	filter: alpha(opacity=0.4);
+	opacity: 0.4;
+}
+.btu_buttom {
+	margin-top: 30px;
+	height: 50px;
+	width: 50px;
+	background: url(../../images/bottom.png) no-repeat;
+	display: block;
+	clear: both;
+	margin: 0 auto;
+}
+.btu_buttom:hover {
+	filter: alpha(opacity=0.4);
+	opacity: 0.4;
+}
+.left a {
+	float: left;
+	display: block;
+	height: 50px;
+	width: 50px;
+	margin-top: 25px;
+}
+
+/*logo图标样式*/
+.logo_icon {
+	top: 1%;
+	left: 2%;
+	z-index:9999;
+	width: 330px;
+	height: 120px;
+	position:absolute;
+	background: url(../../images/logo.png) no-repeat;
+}
+/*logo图标样式*/
+.logo {
+	top: 2%;
+	left: 2%;
+	max-width: 490px;
+	max-height: 90px;
+	width: 25%;
+	height: 8%;
+	position: absolute;
+}
+.logo_bg {
+	width: 100%;
+	height: 90px;
+	left: 0;
+	top: 0;
+	float: left;
+	background: url(images/logo_bc.png) repeat-x;
+}
+/*右侧导航栏样式*/
+.right {
+	right: 0;
+	top: 0;
+	max-width: 100px;
+	max-height: 100px;
+	position: absolute;
+	height: auto;
+	width: 4%;
+	margin: 0 auto;
+	bottom: 40%;
+	padding: 0px;
+}
+
+/*产品推荐*/
+.slidBox {
+	width: 100%;
+	height: 175px;
+	position: absolute;
+	/*width: 60%;
+	height: 20%;
+	bottom: 1%;*/
+	top:720px;
+	margin: 0 auto;
+	overflow: visible;
+	float:left;
+}
+.slb_frbox {
+	height: 175px;
+	width: 1024px;
+	padding: 0px;
+	margin: 0 auto;
+	background: url(../../images/bg_tm.png) center center;
+}
+.slb_frBtnL {
+	float: left;
+	cursor: pointer;
+	height: 148px;
+	left: 0;
+	bottom: 0;
+	position: ababsolute;
+	margin-top: 25px;
+	width: 76px;
+}
+.slb_frBtnR {
+	float: right;
+	cursor: pointer;
+	height: 148px;
+	right: 0;
+	bottom: 0;
+	position: ababsolute;
+	margin-top: 25px;
+	width: 76px;
+}
+.slb_frUl {
+	float: left;
+	height: 150px;
+	width: 880px;
+	overflow: hidden;
+	position: absolute;
+	margin-top: 10px;
+	margin-left: 90px;/*padding-left:18px;*/
+}
+.slb_frUl ul li {
+	display: inline;
+	float: left;
+	width: 200px;
+	height: 120px;
+	margin: 0 auto;
+	margin-right: 10px;
+	overflow: hidden;
+	position: relative;
+}
+.slb_frUl ul li a img {
+	width: 100%;
+	height: 120px;
+}
+/*头部导航样式*/
+ .nav {
+	width: 60%;
+	height: 70px;
+	top: 25px;
+	left: 0%;
+	right:0;
+	float: right;
+	margin:0 auto;
+	margin-right:100px;
+	position:relative;
+}
+ .nav li {
+	width: 15%;
+	height:auto;
+	line-height: 70px;
+	color: #959595;
+	list-style: none;
+	float:right;
+	position:relative;
+	margin-right: 10px;
+	font-family: "Myriad Pro", arial;
+	font-weight: bold;
+	font-size: 20px;
+	text-align: center;
+}
+ .nav li a {
+	color: #fff;
+	text-decoration: none;
+	padding: 0px 10px;
+	padding-top:20px;
+	width:100%;
+}
+ .nav li a:hover{
+	border-top:5px solid #333;
+	color:#333;}
