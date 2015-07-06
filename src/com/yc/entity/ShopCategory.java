@@ -32,7 +32,7 @@ public class ShopCategory {
 	@Column
 	private Boolean isForbidden = false;//是否禁用
 	
-	@ManyToOne(cascade = {CascadeType.MERGE,CascadeType.DETACH,CascadeType.PERSIST,CascadeType.REFRESH}, fetch = FetchType.EAGER)
+	@ManyToOne(cascade = {CascadeType.MERGE,CascadeType.REFRESH},fetch= FetchType.EAGER)
 	@JoinColumn(name = "parentLevel")
 	private ShopCategory parentLevel;//父节点；
 	
@@ -48,6 +48,9 @@ public class ShopCategory {
 	@OneToMany(mappedBy = "carCategory")
 	private List<CarCommodity>  carCommoidties;//商品
 
+	@OneToMany(mappedBy = "shopCategory")
+	private List<FamousManorAndShop> manorAndShops;
+
 	@ManyToMany(mappedBy = "shopCateges")
 	private List<Brand> brands;//品牌
 	
@@ -60,6 +63,13 @@ public class ShopCategory {
 	@Column
 	private String russinaCategory;//商品类名;
 
+	public List<FamousManorAndShop> getManorAndShops() {
+		return manorAndShops;
+	}
+
+	public void setManorAndShops(List<FamousManorAndShop> manorAndShops) {
+		this.manorAndShops = manorAndShops;
+	}
 	public Boolean getIsForbidden() {
 		return isForbidden;
 	}

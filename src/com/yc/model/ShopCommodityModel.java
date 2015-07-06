@@ -22,6 +22,8 @@ public class ShopCommodityModel {
 	
 	private int belongTo;//商品所属店面ID
 	
+	private String shopName;//商品所属店名
+	
 	private List<String> imagePaths;//商品照片路径
 	
 	private String ShopCommImage; //商品路径
@@ -183,5 +185,12 @@ public class ShopCommodityModel {
 	public void setShopCommImage(String shopCommImage) {
 		ShopCommImage = shopCommImage;
 	}
-	
+
+	public String getShopName() {
+		return shopName;
+	}
+
+	public void setShopName(String shopName) {
+		this.shopName = shopName;
+	}
 }

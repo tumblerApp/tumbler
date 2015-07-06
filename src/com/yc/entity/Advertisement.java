@@ -1,7 +1,5 @@
 package com.yc.entity;
 
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -10,7 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 //广告
 @Entity
@@ -27,21 +25,20 @@ public class Advertisement {
 	@Column
 	private String link;//链接
 
-	@OneToMany(mappedBy="advertisement")
-	private List<ShopCommodity> commodities; //对应商品
+	@OneToOne(mappedBy="advertisement")
+	private ShopCommodity commodity; //对应商品
 	
 	@Column
-	private int expenditure;//支出
+	private Float expenditure;//支出
 	
 	@Column
-	private int income;//收入
+	private Float income;//收入
 	
 	@Column
 	private String startDate;//开始日期
 	
 	@Column
 	private int during;//持续时间
-	
 	
 	@ManyToOne
 	@JoinColumn( name = "adverDistribution_id" )
@@ -79,19 +76,19 @@ public class Advertisement {
 		this.adverDistribution = adverDistribution;
 	}
 	
-	public int getExpenditure() {
+	public Float getExpenditure() {
 		return expenditure;
 	}
 
-	public void setExpenditure(int expenditure) {
+	public void setExpenditure(Float expenditure) {
 		this.expenditure = expenditure;
 	}
 
-	public int getIncome() {
+	public Float getIncome() {
 		return income;
 	}
 
-	public void setIncome(int income) {
+	public void setIncome(Float income) {
 		this.income = income;
 	}
 
@@ -111,12 +108,11 @@ public class Advertisement {
 		this.during = during;
 	}
 
-	public List<ShopCommodity> getCommodities() {
-		return commodities;
+	public ShopCommodity getCommodity() {
+		return commodity;
 	}
 
-	public void setCommodities(List<ShopCommodity> commodities) {
-		this.commodities = commodities;
+	public void setCommodity(ShopCommodity commodity) {
+		this.commodity = commodity;
 	}
-	
 }

@@ -10,7 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
 @Entity
-@DiscriminatorValue("shopcommoidtyspecs")//商品表
+@DiscriminatorValue("shopcommoidtyspecs")//商品规格表
 public class ShopCommoditySpecs {
 
 	@Id

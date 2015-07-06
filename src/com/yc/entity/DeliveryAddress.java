@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 @Entity
 public class DeliveryAddress {
@@ -27,9 +28,18 @@ public class DeliveryAddress {
 	@Column
 	private String district;// 区：新市区
 	@Column
-	private String street;// 街道：天津路
-	@Column
-	private String orther;// 其它
+	private String other;// 其它
+	
+	@OneToOne(mappedBy = "address")
+	private Delivery delivery;
+
+	public Delivery getDelivery() {
+		return delivery;
+	}
+
+	public void setDelivery(Delivery delivery) {
+		this.delivery = delivery;
+	}
 
 	public Integer getId() {
 		return id;
@@ -95,20 +105,12 @@ public class DeliveryAddress {
 		this.district = district;
 	}
 
-	public String getStreet() {
-		return street;
+	public String getOther() {
+		return other;
 	}
 
-	public void setStreet(String street) {
-		this.street = street;
-	}
-
-	public String getOrther() {
-		return orther;
-	}
-
-	public void setOrther(String orther) {
-		this.orther = orther;
+	public void setOther(String other) {
+		this.other = other;
 	}
 
 }

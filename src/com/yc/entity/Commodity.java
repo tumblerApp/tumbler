@@ -1,5 +1,6 @@
 package com.yc.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -49,7 +50,7 @@ public class Commodity {
 	@Column
 	private String tradingCode;// 交易码
 
-	@ManyToOne
+	@ManyToOne(cascade={CascadeType.MERGE,CascadeType.DETACH,CascadeType.PERSIST,CascadeType.REFRESH})
 	@JoinColumn(name = "orderform_id")
 	private OrderForm orderNumber;
 

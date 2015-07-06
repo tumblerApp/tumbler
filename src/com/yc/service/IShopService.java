@@ -33,4 +33,11 @@ public interface IShopService extends IGenericService<Shop> {
 	 * @return
 	 */
 	List<Shop> getShopForNotManor();
+	
+	/**
+	 * 模糊查询 商铺
+	 * @param content
+	 * @return
+	 */
+	List<Shop> searchShop(String content);
 }

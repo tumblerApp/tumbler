@@ -15,7 +15,6 @@ import org.springframework.stereotype.Component;
 
 import com.yc.dao.orm.commons.GenericDao;
 import com.yc.entity.OrderForm;
-import com.yc.entity.OrderStatus;
 import com.yc.service.IOrderFormService;
 
 @Component
@@ -83,76 +82,6 @@ public class OrderFormService extends GenericService<OrderForm> implements IOrde
 		}
 		hql.append(" order by o.orderFormID desc");
 		return orderFormDao.getEntityManager().createNativeQuery(hql.toString(), OrderForm.class).getResultList();
-	}
-
-	@Override
-	public List<OrderForm> getAllByParams(Map<String, Object> map, Integer userID) {
-		StringBuffer hql = new StringBuffer("select DISTINCT o.* from OrderForm o where o.user_id = "+userID);
-		if (map.get("orderStatus") != null) {
-			if (map.get("orderStatus").equals("wanjie")) {
-				hql.append(" and o.orderstatus in('"+OrderStatus.completionTransaction+"','"+OrderStatus.consigneeSigning+"')");
-			}else{
-				hql.append(" and o.orderstatus not in ('"+OrderStatus.completionTransaction+"','"+OrderStatus.consigneeSigning+"')");
-			}
-		}
-		if (map.get("orderDate") != null) {
-			if (map.get("orderDate").equals("volvo")) {
-				List<String> dates = CalendarDays(5);
-				 StringBuilder takeDates = new StringBuilder();
-			        for (String date : dates) {
-			            if (takeDates.length() > 0) {
-			                takeDates.append(",");
-			            }
-			            takeDates.append("'");
-			            takeDates.append(date);
-			            takeDates.append("'");
-			        }
-				hql.append(" and o.orderDate in ("+takeDates.toString()+")"); 
-			}else if(map.get("orderDate").equals("saab")){
-				Calendar cal = Calendar.getInstance();
-				Date d1 = new Date();
-				cal.add(Calendar.MONTH, -1);
-				Date d2 = cal.getTime();
-				long daterange = d1.getTime() - d2.getTime();     
-			    long time = 1000*3600*24;
-			    List<String> dates = CalendarDays(Integer.parseInt(String.valueOf(daterange/time)));
-				 StringBuilder takeDates = new StringBuilder();
-			        for (String date : dates) {
-			            if (takeDates.length() > 0) {
-			                takeDates.append(",");
-			            }
-			            takeDates.append("'");
-			            takeDates.append(date);
-			            takeDates.append("'");
-			        }
-			  hql.append(" and o.orderDate in ("+takeDates.toString()+")"); 
-			}else if(map.get("orderDate").equals("fiat")){
-				Calendar cal = Calendar.getInstance();
-				Date d1 = new Date();
-				cal.add(Calendar.MONTH, -3);
-				Date d2 = cal.getTime();
-				cal.setTime(new Date(d2.getTime() - 24 * 60 * 60 * 1000));
-				d2 = cal.getTime();
-				long daterange = d1.getTime() - d2.getTime();     
-			    long time = 1000*3600*24;
-			    List<String> dates = CalendarDays(Integer.parseInt(String.valueOf(daterange/time)));
-				 StringBuilder takeDates = new StringBuilder();
-			        for (String date : dates) {
-			            if (takeDates.length() > 0) {
-			                takeDates.append(",");
-			            }
-			            takeDates.append("'");
-			            takeDates.append(date);
-			            takeDates.append("'");
-			        }
-			   hql.append(" and o.orderDate in ("+takeDates.toString()+")"); 
-			}
-		}
-		orderFormDao.getEntityManager().clear();
-		Query query = orderFormDao.getEntityManager().createNativeQuery(hql.toString(), OrderForm.class);
-		@SuppressWarnings("unchecked")
-		List<OrderForm> list =  query.getResultList();
-		return list;
 	}
 	
 	private List<String> CalendarDays(int day) {
@@ -277,5 +206,12 @@ public class OrderFormService extends GenericService<OrderForm> implements IOrde
 		@SuppressWarnings("unchecked")
 		List<OrderForm> list =  query.getResultList();
 		return list;
+	}
+
+	@Override
+	public List<OrderForm> getAllByParams(Map<String, Object> map,
+			Integer userID) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

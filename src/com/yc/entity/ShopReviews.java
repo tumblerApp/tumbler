@@ -25,17 +25,28 @@ public class ShopReviews {
 	private Integer id;
 	
 	@Column
-	private String reviews;
+	private String reviews;	//评论
 	
 	@Column
-	private String businessreply;
+	private String additionalReviews;	//追加评论
+	
+	@Column
+	private String businessreply; //店家回复
+	
+	@Column
+	private String additionalBusinessreply; //追加店家回复
+
 	
 	@Column
 	private String reviewsdate;
 	
 	@ManyToOne
+	@JoinColumn(name = "order_id")
+	private OrderForm orderForm; //用来标识评论与订单的关系
+	
+	@ManyToOne
 	@JoinColumn(name = "user_id")
-	private AppUser user;
+	private  AppUser user;
 	
 	@ManyToOne
 	@JoinColumn(name = "shopcomm_id")
@@ -48,6 +59,24 @@ public class ShopReviews {
 	@Column
 	private String rankImagesPath;//评论等级路径
 
+	public String getAdditionalReviews() {
+		return additionalReviews;
+	}
+	public void setAdditionalReviews(String additionalReviews) {
+		this.additionalReviews = additionalReviews;
+	}
+	public String getAdditionalBusinessreply() {
+		return additionalBusinessreply;
+	}
+	public void setAdditionalBusinessreply(String additionalBusinessreply) {
+		this.additionalBusinessreply = additionalBusinessreply;
+	}
+	public OrderForm getOrderForm() {
+		return orderForm;
+	}
+	public void setOrderForm(OrderForm orderForm) {
+		this.orderForm = orderForm;
+	}
 	public ReviewsRank getReviewsRank() {
 		return reviewsRank;
 	}

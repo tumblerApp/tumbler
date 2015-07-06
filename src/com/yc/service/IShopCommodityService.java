@@ -137,4 +137,11 @@ public interface IShopCommodityService extends IGenericService<ShopCommodity> {
 	 * 根据类型和是否打折查找对应的商品集合并转化为ShopCommodityModel类型
 	 */
 	public List<ShopCommodityModel> getShopCommByCateAndSpecial(String cateId, int num);
+	
+	/**
+	 * 根据商品查询商铺下的所有商品
+	 * @param shopId 
+	 * @return
+	 */
+	List<ShopCommodity> getCommByShopId(Integer shopId);
 }

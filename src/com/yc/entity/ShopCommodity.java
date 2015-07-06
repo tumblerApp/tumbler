@@ -32,10 +32,16 @@ public class ShopCommodity {
 	private String commItem;// 货号
 	
 	@Column
+	private Integer salesVolume; //销量
+	
+	@Column
 	private String supplier ;//供应商
 	
 	@OneToOne(mappedBy = "shopCommSpecs")
 	private ShopCommoditySpecs commsPecs;
+	
+	@OneToOne(mappedBy = "shopCommodity")
+	private ShopCommodityAttribute commAttribute;
 	
 	@OneToMany(mappedBy = "shopCommodity")
 	private List<Commodity> commodities;
@@ -45,6 +51,13 @@ public class ShopCommodity {
 	
 	@Column
 	private Float unitPrice = 0f;//单价
+
+	
+	@Column
+	private String commUnit;//商品单位：瓶1、箱0perBoxnum
+
+	@Column
+	private Integer perBoxnum;//每箱 几瓶
 	
 	@Column
 	private Float specialPrice = 0f;//活动价
@@ -76,6 +89,10 @@ public class ShopCommodity {
 	@ManyToOne
 	@JoinColumn(name = "shopCategory_id")
 	private ShopCategory shopCategory;//商品类别表
+	
+	@ManyToOne
+	@JoinColumn(name = "famousManor_id")
+	private FamousManor famousManor;//名庄
 	
 	@ManyToOne
 	@JoinColumn(name = "brand_id")
@@ -128,6 +145,9 @@ public class ShopCommodity {
 	@ManyToOne
 	@JoinColumn(name="advertisement_id")
 	private Advertisement advertisement;//广告
+	
+	@Column
+	private String actityImage;
 	
 	public FamousManorAndShop getFamousManorAndShop() {
 		return famousManorAndShop;
@@ -383,4 +403,53 @@ public class ShopCommodity {
 	public void setCommsPecs(ShopCommoditySpecs commsPecs) {
 		this.commsPecs = commsPecs;
 	}
+
+	public Integer getSalesVolume() {
+		return salesVolume;
+	}
+
+	public void setSalesVolume(Integer salesVolume) {
+		this.salesVolume = salesVolume;
+	}
+
+	public ShopCommodityAttribute getCommAttribute() {
+		return commAttribute;
+	}
+
+	public void setCommAttribute(ShopCommodityAttribute commAttribute) {
+		this.commAttribute = commAttribute;
+	}
+
+	public String getCommUnit() {
+		return commUnit;
+	}
+
+	public void setCommUnit(String commUnit) {
+		this.commUnit = commUnit;
+	}
+
+	public Integer getPerBoxnum() {
+		return perBoxnum;
+	}
+
+	public void setPerBoxnum(Integer perBoxnum) {
+		this.perBoxnum = perBoxnum;
+	}
+
+	public FamousManor getFamousManor() {
+		return famousManor;
+	}
+
+	public void setFamousManor(FamousManor famousManor) {
+		this.famousManor = famousManor;
+	}
+
+	public String getActityImage() {
+		return actityImage;
+	}
+
+	public void setActityImage(String actityImage) {
+		this.actityImage = actityImage;
+	}
+	
 }

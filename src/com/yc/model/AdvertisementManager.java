@@ -7,7 +7,6 @@ import org.springframework.ui.ModelMap;
 
 import com.yc.entity.AdvertiseDistribution;
 import com.yc.entity.Advertisement;
-import com.yc.entity.AdvertisementPage;
 import com.yc.service.IAdvertisementDistributionService;
 import com.yc.service.IAdvertisementService;
 
@@ -18,7 +17,7 @@ public class AdvertisementManager {
 	
 	public ModelMap getHomePageAdvertisements(IAdvertisementDistributionService adverDistributionService,IAdvertisementService advertisementService) {
 		ModelMap mode = new ModelMap();
-		AdvertiseDistribution adverDistribution1 = adverDistributionService.findByWhichPageAndPosition(AdvertisementPage.homePage, 1);
+		AdvertiseDistribution adverDistribution1 = adverDistributionService.findByWhichPageAndPosition("homePage", 1);
 		
 		int position1 = 0;
 		if ( adverDistribution1 != null ) {

@@ -5,6 +5,7 @@ import org.springframework.context.annotation.*;
 
 import com.yc.entity.Activity;
 import com.yc.entity.ActivityStyle;
+import com.yc.entity.Address;
 import com.yc.entity.AdvertiseDistribution;
 import com.yc.entity.Advertisement;
 import com.yc.entity.Blacklist;
@@ -158,5 +159,9 @@ public class GenericDaoConfig {
     @Bean 
     public GenericDao<FamousManorAndShop> getFamousManorAndShopDao() {
     	return new GenericDaoSupport<FamousManorAndShop>(FamousManorAndShop.class);
+    }
+    @Bean 
+    public GenericDao<Address> getAddressDao() {
+    	return new GenericDaoSupport<Address>(Address.class);
     }
 }

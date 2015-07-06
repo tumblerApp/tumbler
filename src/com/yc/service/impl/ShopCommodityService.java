@@ -270,10 +270,10 @@ public class ShopCommodityService extends GenericService<ShopCommodity>
 		StringBuffer hql = null;
 		if ( num == -1 ) {
 			hql = new StringBuffer(
-					"SELECT DISTINCT sc.unitPrice,sc.describes, sc.commCode, i.imagePath FROM ShopCommodity sc LEFT JOIN ShopCommImage i ON sc.commCode = i.shopCommoidty_id WHERE sc.isSpecial IS TRUE");
+					"SELECT DISTINCT sc.unitPrice,sc.describes,sc.commCode, i.imagePath,sc.commoidtyName FROM ShopCommodity sc LEFT JOIN ShopCommImage i ON sc.commCode = i.shopCommoidty_id WHERE sc.isSpecial IS TRUE");
 		} else {
 			hql = new StringBuffer(
-					"SELECT DISTINCT sc.unitPrice,sc.describes, sc.commCode, i.imagePath FROM ShopCommodity sc LEFT JOIN ShopCommImage i ON sc.commCode = i.shopCommoidty_id WHERE sc.isSpecial IS TRUE LIMIT "+num);
+					"SELECT DISTINCT sc.unitPrice,sc.describes,sc.commCode, i.imagePath,sc.commoidtyName FROM ShopCommodity sc LEFT JOIN ShopCommImage i ON sc.commCode = i.shopCommoidty_id WHERE sc.isSpecial IS TRUE LIMIT "+num);
 		}
 		
 		Query query = shopCommoidtyDao.getEntityManager().createNativeQuery(
@@ -291,6 +291,7 @@ public class ShopCommodityService extends GenericService<ShopCommodity>
 					mode.setDescribes(obj[1].toString());
 					mode.setCommCode(Integer.parseInt(obj[2].toString()));
 					mode.setShopCommImage(obj[3].toString());
+					mode.setCommoidtyName(obj[4].toString());
 					pr.add(mode);
 				}
 			}
@@ -303,10 +304,10 @@ public class ShopCommodityService extends GenericService<ShopCommodity>
 		StringBuffer hql = null;
 		if ( num == -1 ) {
 			hql = new StringBuffer(
-					"SELECT DISTINCT sc.unitPrice,sc.describes, sc.commCode, i.imagePath FROM ShopCommodity sc RIGHT JOIN Shop s ON s.id = sc.shop_id LEFT JOIN ShopCommImage i ON sc.commCode = i.shopCommoidty_id WHERE s.shopName = '我的酒翁'");
+					"SELECT DISTINCT sc.unitPrice,sc.describes, sc.commCode, i.imagePath,sc.commoidtyName FROM ShopCommodity sc RIGHT JOIN Shop s ON s.id = sc.shop_id LEFT JOIN ShopCommImage i ON sc.commCode = i.shopCommoidty_id WHERE s.shopName = '我的酒翁'");
 		} else {
 			hql = new StringBuffer(
-					"SELECT DISTINCT sc.unitPrice,sc.describes, sc.commCode, i.imagePath FROM ShopCommodity sc RIGHT JOIN Shop s ON s.id = sc.shop_id LEFT JOIN ShopCommImage i ON sc.commCode = i.shopCommoidty_id WHERE s.shopName = '我的酒翁' LIMIT "+num);
+					"SELECT DISTINCT sc.unitPrice,sc.describes, sc.commCode, i.imagePath,sc.commoidtyName FROM ShopCommodity sc RIGHT JOIN Shop s ON s.id = sc.shop_id LEFT JOIN ShopCommImage i ON sc.commCode = i.shopCommoidty_id WHERE s.shopName = '我的酒翁' LIMIT "+num);
 		}
 		
 		Query query = shopCommoidtyDao.getEntityManager().createNativeQuery(
@@ -324,6 +325,7 @@ public class ShopCommodityService extends GenericService<ShopCommodity>
 					mode.setDescribes(obj[1].toString());
 					mode.setCommCode(Integer.parseInt(obj[2].toString()));
 					mode.setShopCommImage(obj[3].toString());
+					mode.setCommoidtyName(obj[4].toString());
 					pr.add(mode);
 				}
 			}
@@ -341,7 +343,7 @@ public class ShopCommodityService extends GenericService<ShopCommodity>
 	@Override
 	public List<ShopCommodityModel> getShopCommByBrand(String brandId) {
 		StringBuffer hql = new StringBuffer(
-				"SELECT  sc.unitPrice,sc.describes, sc.commCode, i.imagePath, b.brandName FROM ShopCommodity sc LEFT JOIN ShopCommImage i ON sc.commCode = i.shopCommoidty_id RIGHT JOIN Brand b ON b.brandID = sc.brand_id WHERE sc.brand_id = "
+				"SELECT  sc.unitPrice,sc.describes, sc.commCode, i.imagePath, b.brandName,sc.commoidtyName FROM ShopCommodity sc LEFT JOIN ShopCommImage i ON sc.commCode = i.shopCommoidty_id RIGHT JOIN Brand b ON b.brandID = sc.brand_id WHERE sc.brand_id = "
 						+ brandId);
 		Query query = shopCommoidtyDao.getEntityManager().createNativeQuery(
 				hql.toString());
@@ -359,6 +361,7 @@ public class ShopCommodityService extends GenericService<ShopCommodity>
 					mode.setCommCode(Integer.parseInt(obj[2].toString()));
 					mode.setShopCommImage(obj[3].toString());
 					mode.setBrandName(obj[4].toString());
+					mode.setCommoidtyName(obj[5].toString());
 					pr.add(mode);
 				}
 			}
@@ -379,11 +382,11 @@ public class ShopCommodityService extends GenericService<ShopCommodity>
 		StringBuffer hql = null;
 		if (num == -1) {
 			hql = new StringBuffer(
-					"SELECT  sc.unitPrice,sc.describes, sc.commCode,i.imagePath,sc.special FROM ShopCommodity sc LEFT JOIN ShopCommImage i ON sc.commCode = i.shopCommoidty_id WHERE sc.isSpecial=1 AND sc.shopCategory_id="
+					"SELECT  sc.unitPrice,sc.describes, sc.commCode,i.imagePath,sc.special,sc.commoidtyName FROM ShopCommodity sc LEFT JOIN ShopCommImage i ON sc.commCode = i.shopCommoidty_id WHERE sc.isSpecial=1 AND sc.shopCategory_id="
 							+ cateId + " ORDER BY sc.special ASC");
 		} else {
 			hql = new StringBuffer(
-					"SELECT  sc.unitPrice,sc.describes, sc.commCode,i.imagePath,sc.special FROM ShopCommodity sc LEFT JOIN ShopCommImage i ON sc.commCode = i.shopCommoidty_id WHERE sc.isSpecial=1 AND sc.shopCategory_id="
+					"SELECT  sc.unitPrice,sc.describes, sc.commCode,i.imagePath,sc.special,sc.commoidtyName FROM ShopCommodity sc LEFT JOIN ShopCommImage i ON sc.commCode = i.shopCommoidty_id WHERE sc.isSpecial=1 AND sc.shopCategory_id="
 							+ cateId + " ORDER BY sc.special ASC LIMIT " + num);
 		}
 
@@ -403,6 +406,7 @@ public class ShopCommodityService extends GenericService<ShopCommodity>
 					mode.setCommCode(Integer.parseInt(obj[2].toString()));
 					mode.setShopCommImage(obj[3].toString());
 					mode.setSpecial(Float.parseFloat(obj[4].toString()));
+					mode.setCommoidtyName(obj[5].toString());
 					pr.add(mode);
 				}
 			}
@@ -423,12 +427,12 @@ public class ShopCommodityService extends GenericService<ShopCommodity>
 		StringBuffer hql = null;
 		if (num == -1) {
 			hql = new StringBuffer(
-					"SELECT sc.unitPrice,sc.describes, sc.commCode,i.imagePath FROM shopcommodity sc LEFT JOIN shop sp ON sc.shop_id=sp.id LEFT JOIN shopcommimage i ON i.shopCommoidty_id=sc.commCode WHERE sc.shopCategory_id="
+					"SELECT sc.unitPrice,sc.describes, sc.commCode,i.imagePath,sc.commoidtyName FROM shopcommodity sc LEFT JOIN shop sp ON sc.shop_id=sp.id LEFT JOIN shopcommimage i ON i.shopCommoidty_id=sc.commCode WHERE sc.shopCategory_id="
 							+ cateId
 							+ " AND sp.shopName='我的酒翁' ORDER BY sc.unitPrice DESC");
 		} else {
 			hql = new StringBuffer(
-					"SELECT sc.unitPrice,sc.describes, sc.commCode,i.imagePath FROM shopcommodity sc LEFT JOIN shop sp ON sc.shop_id=sp.id LEFT JOIN shopcommimage i ON i.shopCommoidty_id=sc.commCode WHERE sc.shopCategory_id="
+					"SELECT sc.unitPrice,sc.describes, sc.commCode,i.imagePath,sc.commoidtyName FROM shopcommodity sc LEFT JOIN shop sp ON sc.shop_id=sp.id LEFT JOIN shopcommimage i ON i.shopCommoidty_id=sc.commCode WHERE sc.shopCategory_id="
 							+ cateId
 							+ " AND sp.shopName='我的酒翁' ORDER BY sc.unitPrice DESC LIMIT "+num);
 		}
@@ -448,10 +452,26 @@ public class ShopCommodityService extends GenericService<ShopCommodity>
 					mode.setDescribes(obj[1].toString());
 					mode.setCommCode(Integer.parseInt(obj[2].toString()));
 					mode.setShopCommImage(obj[3].toString());
+					mode.setCommoidtyName(obj[4].toString());
 					pr.add(mode);
 				}
 			}
 		}
 		return pr;
 	}
+	
+	/* 
+	 * 根据商铺id查询商铺下的所有商品
+	 * (non-Javadoc)
+	 * @see com.yc.service.IShopCommodityService#getCommByShopId()
+	 */
+	@Override
+	public List<ShopCommodity> getCommByShopId(Integer shopId) {
+		StringBuffer hql=new StringBuffer("SELECT * FROM shopcommodity WHERE shopcommodity.shop_id="+shopId);
+		Query query = shopCommoidtyDao.getEntityManager().createNativeQuery(hql.toString(), ShopCommodity.class);
+		@SuppressWarnings("unchecked")
+		List<ShopCommodity> list =  query.getResultList();
+		return list;
+	}
+
 }

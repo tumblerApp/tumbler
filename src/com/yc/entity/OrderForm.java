@@ -2,6 +2,7 @@ package com.yc.entity;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -35,9 +36,12 @@ public class OrderForm {
 	@JoinColumn(name = "user_id")
 	private AppUser orderUser;
 
-	@OneToOne
+	@OneToOne(cascade={CascadeType.MERGE,CascadeType.DETACH,CascadeType.PERSIST,CascadeType.REFRESH})
 	@JoinColumn(name = "delivery_id")
 	private Delivery delivery;
+	
+	@OneToMany(mappedBy = "orderForm")
+	private List<ShopReviews> reviews;
 	
 	@Column
 	@Enumerated(EnumType.STRING)
@@ -62,8 +66,6 @@ public class OrderForm {
 	@Column
 	private String paymentTime;// 付款时间
 
-	@Column
-	private String sendDate;//发货日期
 	
 	public String getOrderTime() {
 		return orderTime;
@@ -152,5 +154,12 @@ public class OrderForm {
 	public void setOrderUser(AppUser orderUser) {
 		this.orderUser = orderUser;
 	}
+	
+	public List<ShopReviews> getReviews() {
+		return reviews;
+	}
 
+	public void setReviews(List<ShopReviews> reviews) {
+		this.reviews = reviews;
+	}
 }

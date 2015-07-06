@@ -1,5 +1,6 @@
 package com.yc.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -23,7 +24,7 @@ public class Delivery {
 	@OneToOne(mappedBy = "delivery")
 	private OrderForm orderForm;
 	
-	@OneToOne
+	@OneToOne(cascade={CascadeType.MERGE,CascadeType.DETACH,CascadeType.PERSIST,CascadeType.REFRESH})
 	@JoinColumn(name = "address_id")
 	private DeliveryAddress address;//交付地址
 

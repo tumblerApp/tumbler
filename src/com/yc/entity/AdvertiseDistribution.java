@@ -10,9 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-//广告分配
 @Entity
-@DiscriminatorValue("adverDistribution")
+@DiscriminatorValue("adverDistribution") //广告分配
 public class AdvertiseDistribution {
 
 	@Id
@@ -20,19 +19,50 @@ public class AdvertiseDistribution {
 	private Integer adverDisId;
 	
 	@Column
-	private String whichPage;//所在页面
+	private String  whichPage;//广告所在页面
+	
+	@Column
+	private String lAndW;//宽高
 	
 	@Column
 	private Integer position;//位置
 	
 	@Column
-	private Integer num;//所在位置的广告数量
-	
-	@Column
-	private String lAndW;//宽高
-	
+	private Integer num;//数量
+
 	@OneToMany(mappedBy = "adverDistribution")
-	private List<Advertisement> advertisementList;//广告
+	private List<Advertisement> advertisementList;
+
+	public String getlAndW() {
+		return lAndW;
+	}
+
+	public void setlAndW(String lAndW) {
+		this.lAndW = lAndW;
+	}
+
+	public Integer getId() {
+		return adverDisId;
+	}
+
+	public void setId(Integer adverDisId) {
+		this.adverDisId = adverDisId;
+	}
+	public Integer getAdverDisId() {
+		return adverDisId;
+	}
+
+	public void setAdverDisId(Integer adverDisId) {
+		this.adverDisId = adverDisId;
+	}
+
+	public String getWhichPage() {
+		return whichPage;
+	}
+
+	public void setWhichPage(String whichPage) {
+		this.whichPage = whichPage;
+	}
 
 	public Integer getPosition() {
 		return position;
@@ -56,26 +86,6 @@ public class AdvertiseDistribution {
 
 	public void setNum(Integer num) {
 		this.num = num;
-	}
-
-	public Integer getAdverDisId() {
-		return adverDisId;
-	}
-
-	public void setAdverDisId(Integer adverDisId) {
-		this.adverDisId = adverDisId;
-	}
-
-	public String getlAndW() {
-		return lAndW;
-	}
-
-	public void setlAndW(String lAndW) {
-		this.lAndW = lAndW;
-	}
-
-	public void setWhichPage(String whichPage) {
-		this.whichPage = whichPage;
 	}
 
 }

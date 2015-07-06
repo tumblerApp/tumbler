@@ -6,6 +6,7 @@ public class CarCommodityModel {
 	private float price;// 总价格
 	private String shopComName;
 	private Integer shopCommCode;
+	private Integer carCommID;
 	private float unitPrice;
 
 	public String getImagePath() {
@@ -54,6 +55,14 @@ public class CarCommodityModel {
 
 	public void setUnitPrice(float unitPrice) {
 		this.unitPrice = unitPrice;
+	}
+
+	public Integer getCarCommID() {
+		return carCommID;
+	}
+
+	public void setCarCommID(Integer carCommID) {
+		this.carCommID = carCommID;
 	}
 	
 }

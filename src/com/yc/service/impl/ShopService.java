@@ -51,4 +51,15 @@ public class ShopService extends GenericService<Shop> implements IShopService {
 		String hql = "SELECT * FROM shop WHERE ID NOT IN ( SELECT famousmanorandshop.shop_id FROM famousmanorandshop LEFT JOIN shop ON shop.id = famousmanorandshop.shop_id) AND isPermit = 1 AND shop.blacklist_id IS NULL";
 		return shopDao.getEntityManager().createNativeQuery(hql.toString(), Shop.class).getResultList();
 	}
+	
+	/* (non-Javadoc)
+	 * 搜寻商铺
+	 * @see com.yc.service.IShopService#searchShop(java.lang.String)
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Shop> searchShop(String content) {
+		StringBuffer hql=new StringBuffer("SELECT * FROM  shop sp LEFT JOIN shopcategory sc ON sc.categoryID=sp.shopCategory_id WHERE sp.shopName LIKE '%"+content+"%' OR sp.shopCategory_id LIKE '%"+content+"%' OR sp.address LIKE '%"+content+"%'");
+		return shopDao.getEntityManager().createNativeQuery(hql.toString(), Shop.class).getResultList();
+	}
 }

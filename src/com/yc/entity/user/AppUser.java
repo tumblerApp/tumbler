@@ -1,13 +1,11 @@
 package com.yc.entity.user;
 
-import java.beans.Transient;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -18,9 +16,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Transient;
 
-import com.yc.entity.BuyCar;
+import com.yc.entity.Collection;
+import com.yc.entity.MissionPlan;
+import com.yc.entity.OrderForm;
 import com.yc.entity.Shop;
 import com.yc.entity.ShopCommodity;
 
@@ -48,10 +50,10 @@ public class AppUser {
 	private String validateCode;//邮箱激活码
 	
 	@Column
-	private Boolean  status;
+	private Boolean status;
 	
 	@Column
-	private String emailBindTime;
+	private String emailBindTime;//邮箱绑定时间
 	
 	@Column
 	@Enumerated(EnumType.STRING)
@@ -64,11 +66,60 @@ public class AppUser {
 	@Column
 	private String birthday;
 	
+	@Column
+	private Integer points = 0;//积分
+	
 	@ManyToMany(mappedBy = "users")
 	private List<ShopCommodity> activityCommodities;//商品类别
 	
-	@OneToOne(mappedBy = "appUser")
-	private BuyCar buyCar;
+	@OneToMany(mappedBy = "user")
+	private List<Collection> collections;//商品类别
+	
+	@OneToMany(mappedBy = "orderUser")
+	private List<OrderForm> orderForms;//商品类别
+
+	@OneToMany(mappedBy = "toUser")
+	private List<MissionPlan> missionPlans;//消息
+
+	public List<MissionPlan> getMissionPlans() {
+		return missionPlans;
+	}
+
+	public void setMissionPlans(List<MissionPlan> missionPlans) {
+		this.missionPlans = missionPlans;
+	}
+	
+	public Integer getPoints() {
+		return points;
+	}
+
+	public void setPoints(Integer points) {
+		this.points = points;
+	}
+
+	public List<OrderForm> getOrderForms() {
+		return orderForms;
+	}
+
+	public void setOrderForms(List<OrderForm> orderForms) {
+		this.orderForms = orderForms;
+	}
+
+	public List<Collection> getCollections() {
+		return collections;
+	}
+
+	public void setCollections(List<Collection> collections) {
+		this.collections = collections;
+	}
+
+	public List<ShopCommodity> getActivityCommodities() {
+		return activityCommodities;
+	}
+
+	public void setActivityCommodities(List<ShopCommodity> activityCommodities) {
+		this.activityCommodities = activityCommodities;
+	}
 
 	public Shop getShop() {
 		return shop;
@@ -158,22 +209,6 @@ public class AppUser {
 		this.birthday = birthday;
 	}
 	
-	public List<ShopCommodity> getActivityCommodities() {
-		return activityCommodities;
-	}
-
-	public void setActivityCommodities(List<ShopCommodity> activityCommodities) {
-		this.activityCommodities = activityCommodities;
-	}
-
-	public BuyCar getBuyCar() {
-		return buyCar;
-	}
-
-	public void setBuyCar(BuyCar buyCar) {
-		this.buyCar = buyCar;
-	}
-
 	@Transient
     public Date getLastActivateTime() throws ParseException {
         Calendar cl = Calendar.getInstance();
