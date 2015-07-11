@@ -267,8 +267,7 @@ public class ReponseHomeController {
 			@RequestParam(value = "content") String content)
 			throws ServletException, IOException {
 		ModelMap mode = new ModelMap();
-		List<ShopCommodity> searchResultList = shopCommoidtyService
-				.searchShopComm(content);
+		List<ShopCommodity> searchResultList = shopCommoidtyService.searchShopComm(content);
 		List<ShopCommodityModel> list = new ArrayList<ShopCommodityModel>();
 		ShopCommodityModel item = null;
 		for (int i = 0; i < searchResultList.size(); i++) {
@@ -522,5 +521,38 @@ public class ReponseHomeController {
 				buyCarService.delete(car.getCatID());
 			}
 		}
+	}
+	
+	/**
+	 * 通过类别名获取其下所有商品
+	 * @param shopCate
+	 * @return
+	 * @throws ServletException
+	 * @throws IOException
+	 */
+	@RequestMapping(value = "getShopCommByCategoryName", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> getShopCommByCategoryName(String categoryName) throws ServletException, IOException {
+		ModelMap mode=new ModelMap();
+		ShopCategory  shopCategory =shopcategoryService.getByshopCate(categoryName);
+		Tools.lists.clear();
+		List<ShopCategory> lists=Tools.getNodeForShopCategory(shopCategory);
+		List<ShopCommodityModel> shopCommodityModelList = new ArrayList<ShopCommodityModel>();
+		List<ShopCommodity> shopCommodityList= new ArrayList<ShopCommodity>();
+		for ( int i = 0; i < lists.size(); i++ ) {			
+ 			    List<ShopCommodity> ShopCommoditys=shopCommoidtyService.getAllByShopCategoryID(lists.get(i).getCategoryID(), null);
+ 			   shopCommodityList.addAll(ShopCommoditys);
+ 		}
+        for (int i = 0; i < shopCommodityList.size(); i++) {
+			   ShopCommodityModel shopCommMode=new ShopCommodityModel();
+			   shopCommMode.setCommCode(shopCommodityList.get(i).getCommCode());//id
+			   shopCommMode.setCommoidtyName(shopCommodityList.get(i).getCommoidtyName());//商品名称
+			   shopCommMode.setShopCommImage(shopCommodityList.get(i).getShopCommImages().get(0).getImagePath());//图片路径
+			   shopCommMode.setUnitPrice(shopCommodityList.get(i).getUnitPrice());//单价
+			   shopCommMode.setDescribes(shopCommodityList.get(i).getDescribes());//描述
+			   shopCommodityModelList.add(shopCommMode);
+		}
+        mode.put("shopCommodityModelList", shopCommodityModelList);
+		return mode;
 	}
 }

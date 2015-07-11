@@ -2,6 +2,8 @@ package com.yc.service.impl;
 
 import java.util.List;
 
+import javax.persistence.Query;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -51,5 +53,17 @@ public class ShopCategoryService extends GenericService<ShopCategory> implements
 	public List<ShopCategory> getAllByType(int i) {
 		StringBuffer hql = new StringBuffer(" from ShopCategory cate where cate.categoryID = "+i);
 		return shopCategoryDao.find(hql.toString(), null,1,8);
+	}
+    
+    /* (non-Javadoc)
+	 * 根据类名查找类别对象
+	 * @see com.yc.service.IShopCategoryService#getByshopCate(java.lang.String)
+	 */
+	@Override
+	public ShopCategory getByshopCate(String shopCate) {
+		StringBuffer hql=new StringBuffer("SELECT * FROM shopcategory WHERE shopcategory.category='"+shopCate+"'");
+		Query query = shopCategoryDao.getEntityManager().createNativeQuery(hql.toString(), ShopCategory.class);
+		ShopCategory shopCategory=(ShopCategory) query.getSingleResult();
+		return shopCategory;
 	}
 }

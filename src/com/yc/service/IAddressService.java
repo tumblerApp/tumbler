@@ -13,4 +13,10 @@ public interface IAddressService extends IGenericService<Address> {
 	 * @return
 	 */
 	List<Address> getAllByuserName(String userName);
+	
+	/**
+	 * 获取默认地址
+	 * @return
+	 */
+	List<Address> getDefaultAddress(String userName);
 }

@@ -171,7 +171,7 @@ public class CommodityService extends GenericService<Commodity> implements IComm
 					mode.setCommodityName(obj[2].toString());
 					mode.setPath(obj[3].toString());
 					mode.setSums(Integer.parseInt(obj[4].toString()));
-					mode.setDescribes(obj[5].toString());
+					//mode.setDescribes(obj[5].toString());
 					pr.add(mode);
 				}
 			}
@@ -206,7 +206,7 @@ public class CommodityService extends GenericService<Commodity> implements IComm
 					mode.setCommodityName(obj[2].toString());
 					mode.setPath(obj[3].toString());
 					mode.setSums(Integer.parseInt(obj[4].toString()));
-					mode.setDescribes(obj[5].toString());
+					//mode.setDescribes(obj[5].toString());
 					pr.add(mode);
 				}
 			}

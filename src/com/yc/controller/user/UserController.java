@@ -49,7 +49,6 @@ public class UserController {
 			}
 		}
 	}
-
 	
 	@RequestMapping(value = "regist", method = RequestMethod.GET)
 	public ModelAndView register(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

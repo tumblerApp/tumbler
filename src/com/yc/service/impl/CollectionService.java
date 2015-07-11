@@ -42,7 +42,7 @@ public class CollectionService extends GenericService<Collection> implements ICo
 	@Override
 	public Collection getByUserNameAndShopID(String userName, Integer shopID) {
 		List<String> keys = new ArrayList<String>();
-		keys.add("phone");
+		keys.add("user.phone");
 		keys.add("shop.id");
 		List<Object> values = new ArrayList<Object>();
 		values.add(userName);

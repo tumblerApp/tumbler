@@ -44,4 +44,11 @@ public interface IShopCategoryService extends IGenericService<ShopCategory> {
 	 * @return
 	 */
 	List<ShopCategory> getAllByType(int i);
+	
+	/**
+	 * 根据商品类型的名称查找商品类型
+	 * @param shopCate
+	 * @return
+	 */
+	ShopCategory getByshopCate(String shopCate);
 }

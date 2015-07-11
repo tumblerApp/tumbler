@@ -12,6 +12,7 @@ public class AddressModel {
 	private Integer provienceId;
 	private Integer cityId;
 	private Integer countryId;
+	private Boolean theDefault;
 	
 	public Integer getAddressId() {
 		return addressId;
@@ -92,4 +93,13 @@ public class AddressModel {
 	public void setCountryId(Integer countryId) {
 		this.countryId = countryId;
 	}
+
+	public Boolean getTheDefault() {
+		return theDefault;
+	}
+
+	public void setTheDefault(Boolean theDefault) {
+		this.theDefault = theDefault;
+	}
+	
 }

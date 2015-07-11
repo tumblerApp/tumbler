@@ -49,10 +49,10 @@ public class ShopCommodityService extends GenericService<ShopCommodity>
 		StringBuffer hql = new StringBuffer(
 				"SELECT shc.* FROM ShopCommodity shc JOIN Shop shop ON shop.id = shc.shop_id WHERE (shc.blacklist_id IS NULL AND shop.blacklist_id IS NULL AND shc.shelves = 1 ) AND shc.shop_id IS NOT NULL AND shc.shopCategory_id ="
 						+ id);
-		if (page.equals("brand")) {
+		if ("brand".equals(page)) {
 			hql.append(" and shc.brand_id is not null");
 		}
-		if (page.equals("special")) {
+		if ("special".equals(page)) {
 			hql.append(" and shc.isSpecial = 1");
 		}
 		Query query = shopCommoidtyDao.getEntityManager().createNativeQuery(

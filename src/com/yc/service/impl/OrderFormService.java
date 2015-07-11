@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 
 import com.yc.dao.orm.commons.GenericDao;
 import com.yc.entity.OrderForm;
+import com.yc.entity.OrderStatus;
 import com.yc.service.IOrderFormService;
 
 @Component
@@ -50,7 +51,7 @@ public class OrderFormService extends GenericService<OrderForm> implements IOrde
 	
 	@Override
 	public List<OrderForm> getAllByOrderStatus(String orderStatus) {
-		String hql = " from OrderForm c where c.orderstatus in ("+orderStatus+")";
+		String hql = " from OrderForm c where c.orderstatus = '"+orderStatus+"'";
 		return orderFormDao.find(hql, null, null);
 	}
 
@@ -211,7 +212,136 @@ public class OrderFormService extends GenericService<OrderForm> implements IOrde
 	@Override
 	public List<OrderForm> getAllByParams(Map<String, Object> map,
 			Integer userID) {
-		// TODO Auto-generated method stub
-		return null;
+		StringBuffer hql = new StringBuffer("select DISTINCT o.* from OrderForm o where o.user_id = "+userID);
+		if (map.get("orderStatus") != null) {
+			if (map.get("orderStatus").equals("wanjie")) {
+				hql.append(" and o.orderstatus in('"+OrderStatus.completionTransaction+"')");
+			}else if(map.get("orderStatus").equals("tuikuan")){
+				hql.append(" and o.orderstatus in ('"+OrderStatus.ApplicationForRefund+"','"+OrderStatus.refundOrderForm+"','"+OrderStatus.refundSuccess+"','"+OrderStatus.refundFailed+"')");
+			}else {
+				hql.append(" and o.orderstatus in ('"+OrderStatus.valueOf(map.get("orderStatus").toString())+"')");
+			}
+		}
+		if (map.get("orderDate") != null) {
+			if (map.get("orderDate").equals("volvo")) {
+				List<String> dates = CalendarDays(5);
+				 StringBuilder takeDates = new StringBuilder();
+			        for (String date : dates) {
+			            if (takeDates.length() > 0) {
+			                takeDates.append(",");
+			            }
+			            takeDates.append("'");
+			            takeDates.append(date);
+			            takeDates.append("'");
+			        }
+				hql.append(" and o.orderDate in ("+takeDates.toString()+")"); 
+			}else if(map.get("orderDate").equals("saab")){
+				Calendar cal = Calendar.getInstance();
+				Date d1 = new Date();
+				cal.add(Calendar.MONTH, -1);
+				Date d2 = cal.getTime();
+				long daterange = d1.getTime() - d2.getTime();     
+			    long time = 1000*3600*24;
+			    List<String> dates = CalendarDays(Integer.parseInt(String.valueOf(daterange/time)));
+				 StringBuilder takeDates = new StringBuilder();
+			        for (String date : dates) {
+			            if (takeDates.length() > 0) {
+			                takeDates.append(",");
+			            }
+			            takeDates.append("'");
+			            takeDates.append(date);
+			            takeDates.append("'");
+			        }
+			  hql.append(" and o.orderDate in ("+takeDates.toString()+")"); 
+			}else if(map.get("orderDate").equals("fiat")){
+				Calendar cal = Calendar.getInstance();
+				Date d1 = new Date();
+				cal.add(Calendar.MONTH, -3);
+				Date d2 = cal.getTime();
+				cal.setTime(new Date(d2.getTime() - 24 * 60 * 60 * 1000));
+				d2 = cal.getTime();
+				long daterange = d1.getTime() - d2.getTime();     
+			    long time = 1000*3600*24;
+			    List<String> dates = CalendarDays(Integer.parseInt(String.valueOf(daterange/time)));
+				 StringBuilder takeDates = new StringBuilder();
+			        for (String date : dates) {
+			            if (takeDates.length() > 0) {
+			                takeDates.append(",");
+			            }
+			            takeDates.append("'");
+			            takeDates.append(date);
+			            takeDates.append("'");
+			        }
+			   hql.append(" and o.orderDate in ("+takeDates.toString()+")"); 
+			}
+		}
+		orderFormDao.getEntityManager().clear();
+		Query query = orderFormDao.getEntityManager().createNativeQuery(hql.toString(), OrderForm.class);
+		@SuppressWarnings("unchecked")
+		List<OrderForm> list =  query.getResultList();
+		return list;
+	}
+	
+	@Override
+	public List<OrderForm> getAllRefundByStatus(Map<String, Object> map,
+			Integer shopID) {
+		StringBuffer hql = new StringBuffer("select DISTINCT o.* from OrderForm o right join Commodity com on com.orderform_id = o.orderFormID  where com.seller_name = "+shopID);
+		
+		if (map.get("orderStatusRefunding") != null) {
+			hql.append(" and o.orderstatus = '" + map.get("orderStatusRefunding") + "'");
+		}if (map.get("orderStatusRefundSuccess") != null) {
+			hql.append(" or o.orderstatus = '" + map.get("orderStatusRefundSuccess") + "'");
+		}if (map.get("orderStatusRefundfail") != null) {
+			hql.append(" or o.orderstatus = '" + map.get("orderStatusRefundfail") + "'");
+		}if (map.get("ApplicationForRefund") != null) {
+			hql.append(" or o.orderstatus = '" + map.get("ApplicationForRefund") + "'");
+		}
+		orderFormDao.getEntityManager().clear();
+		Query query =  orderFormDao.getEntityManager().createNativeQuery(hql.toString(), OrderForm.class);
+		@SuppressWarnings("unchecked")
+		List<OrderForm> list =  query.getResultList();
+		return list;
+	}
+
+	@Override
+	public List<OrderForm> getAllRefundByStatusUID(Map<String, Object> map,
+			Integer userID) {
+		StringBuffer hql = new StringBuffer("select DISTINCT o.* from OrderForm o right join Commodity com on com.orderform_id = o.orderFormID  where o.user_id = "+userID);
+		if (map.get("orderStatusRefunding") != null) {
+			hql.append(" and o.orderstatus = '" + map.get("orderStatusRefunding") + "'");
+		}if (map.get("orderStatusRefundSuccess") != null) {
+			hql.append(" or o.orderstatus = '" + map.get("orderStatusRefundSuccess") + "'");
+		}if (map.get("orderStatusRefundfail") != null) {
+			hql.append(" or o.orderstatus = '" + map.get("orderStatusRefundfail") + "'");
+		}
+		Query query =  orderFormDao.getEntityManager().createNativeQuery(hql.toString(), OrderForm.class);
+		@SuppressWarnings("unchecked")
+		List<OrderForm> list =  query.getResultList();
+		return list;
+	}
+	
+	/* (non-Javadoc)
+	 * 查询最新订单信息
+	 * @see com.yc.service.IOrderFormService#searchNewst()
+	 */
+	@Override
+	public OrderForm searchNewst() {
+		StringBuffer hql=new StringBuffer("SELECT * FROM orderform ORDER BY orderform.orderFormID DESC LIMIT 1");
+		Query query =  orderFormDao.getEntityManager().createNativeQuery(hql.toString(), OrderForm.class);
+		OrderForm newstOrderForm=(OrderForm) query.getSingleResult();
+		return newstOrderForm;
+	}
+	
+	/* (non-Javadoc)
+	 * 查询用户的订单信息
+	 * @see com.yc.service.IOrderFormService#findByPhone(java.lang.String)
+	 */
+	@Override
+	public List<OrderForm> findByPhone(String phone) {
+		StringBuffer hql=new StringBuffer("SELECT * FROM orderform LEFT JOIN appuser ON orderform.user_id=appuser.id WHERE appuser.phone='"+phone+"'");
+		Query query =  orderFormDao.getEntityManager().createNativeQuery(hql.toString(), OrderForm.class);
+		@SuppressWarnings("unchecked")
+		List<OrderForm> orderFormList=query.getResultList();
+		return orderFormList;
 	}
 }

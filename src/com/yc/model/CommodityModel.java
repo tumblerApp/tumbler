@@ -21,6 +21,8 @@ public class CommodityModel {
 	private float price;
 	
 	private String describes;
+	
+	private float totalPrice;//总价
 
 	public float getPrice() {
 		return price;
@@ -100,6 +102,14 @@ public class CommodityModel {
 
 	public void setCommodityName(String commodityName) {
 		this.commodityName = commodityName;
+	}
+
+	public float getTotalPrice() {
+		return totalPrice;
+	}
+
+	public void setTotalPrice(float totalPrice) {
+		this.totalPrice = totalPrice;
 	}
 	
 }

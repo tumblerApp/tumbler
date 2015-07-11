@@ -66,6 +66,8 @@ public class OrderForm {
 	@Column
 	private String paymentTime;// 付款时间
 
+	@Column
+	private Float totalPrice=0f;// 订单总金额
 	
 	public String getOrderTime() {
 		return orderTime;
@@ -161,5 +163,13 @@ public class OrderForm {
 
 	public void setReviews(List<ShopReviews> reviews) {
 		this.reviews = reviews;
+	}
+
+	public Float getTotalPrice() {
+		return totalPrice;
+	}
+
+	public void setTotalPrice(Float totalPrice) {
+		this.totalPrice = totalPrice;
 	}
 }

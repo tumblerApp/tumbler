@@ -39,4 +39,13 @@ public class AddressService extends GenericService<Address> implements IAddressS
 		List<Address> list =  query.getResultList();
 		return list;
 	}
+
+	@Override
+	public List<Address> getDefaultAddress(String userName) {
+		StringBuffer hql=new StringBuffer("SELECT * FROM address LEFT JOIN appuser ON address.user_id=appuser.id WHERE appuser.phone='"+userName+"' and address.theDefault is true");
+		Query query = addressDao.getEntityManager().createNativeQuery(hql.toString(), Address.class);
+		@SuppressWarnings("unchecked")
+		List<Address> list =  query.getResultList();
+		return list;
+	}
 }

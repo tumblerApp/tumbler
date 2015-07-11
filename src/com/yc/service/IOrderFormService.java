@@ -88,4 +88,27 @@ public interface IOrderFormService extends IGenericService<OrderForm>{
 	 * @return
 	 */
 	List<OrderForm> getAllByStatus();
+	
+	/**
+	 * 查询退款订单：退款中的订单orderStatusRefunding、退款成功orderStatusRefundSuccess，退款失败orderStatusRefundfail
+	 */
+	List<OrderForm> getAllRefundByStatus(Map<String, Object> map,Integer shopID);
+	
+	/**
+	 * 通过 用户ID 查询退款订单：退款中的订单orderStatusRefunding、退款成功orderStatusRefundSuccess，退款失败orderStatusRefundfail
+	 */
+	List<OrderForm> getAllRefundByStatusUID(Map<String, Object> map,Integer userID);
+	
+	/**
+	 * 查询最新订单
+	 * @return
+	 */
+	OrderForm searchNewst();
+	
+	/**
+	 * 查询用户的订单信息
+	 * @param phone
+	 * @return
+	 */
+	List<OrderForm> findByPhone(String phone);
 }
