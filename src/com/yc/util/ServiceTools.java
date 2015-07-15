@@ -45,7 +45,6 @@ public class ServiceTools {
   	public   List<CarCommodity> handleCarCommodity(List<CarCommodity> carcommodities,String userName) throws ParseException{
   		  List<CarCommodity> handleCarCommodities=new ArrayList<CarCommodity>();
   		  SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
-  		  System.out.println("carcommodities===="+carcommodities.size()+"---"+userName);
             for (int i = 0; i < carcommodities.size();i++) {
   			        CarCommodity carcommodity=carcommodities.get(i);// 循环获得购物车商品
   			        ShopCommodity shopcommodity=carcommodity.getShopCommodity();//获得购物车商品所属的shopCommodity
@@ -79,12 +78,10 @@ public class ServiceTools {
   			        	}
   			        }else{
   			        	Activity activity=shopcommodity.getActivity();//活动
-  			        	System.out.println("==========="+shopcommodity.getUsers());
   			        	ActivityStyle activityStyle=activity.getActivityStyle();//活动方式
   			        	Date now=sdf.parse(sdf.format(new Date()));//现在时间
 			            Date endDate=sdf.parse(activity.getEndDate());//活动截止时间
 			            Boolean sign=endDate.before(now);// 判断截止日期(endDate)是否当前日期(now)之前，false即活动进行中
-			            System.out.println("activityStyleName==="+activityStyle.getActivityStyleId()+"  "+activityStyle.getActivityStyle()+" "+sign);
   			        	if(activityStyle.getActivityStyle().equals("限时抢购")){
   			        		  if(sign==false){
   			        			carcommodity.setUnitPrice(shopcommodity.getSpecialPrice());//把购物车商品更新为限时活动价位
@@ -155,17 +152,17 @@ public class ServiceTools {
 					  		  			        	carcommoidtyService.update(carcommodity);//更新购物车商品信息
 					  		  			        	handleCarCommodities.add(carcommodity);
  			        			         }else{
- 			        			        	       if(isSign){//折扣
- 			        			        	    		carcommodity.setUnitPrice(shopcommodity.getSpecial()*shopcommodity.getUnitPrice());//把购物车商品更新为折扣价位
- 			         			  			        	carcommodity.setPrice(shopcommodity.getSpecial()*carcommodity.getAmount()*shopcommodity.getUnitPrice());//重新计算购物车总价
- 			         			  			        	carcommoidtyService.update(carcommodity);//更新购物车商品信息
- 			         			  			            handleCarCommodities.add(carcommodity);
- 			        			        	       }else{
-	  			        			        	    carcommodity.setUnitPrice(shopcommodity.getUnitPrice());//把购物车商品更新为现实价位
-							  			        	carcommodity.setPrice(shopcommodity.getUnitPrice()*carcommodity.getAmount());//重新计算购物车总价
-							  			        	carcommoidtyService.update(carcommodity);//更新购物车商品信息
-							  			        	handleCarCommodities.add(carcommodity);
- 			        			        	       }
+		        			        	       if(isSign){//折扣
+		        			        	    		carcommodity.setUnitPrice(shopcommodity.getSpecial()*shopcommodity.getUnitPrice());//把购物车商品更新为折扣价位
+		         			  			        	carcommodity.setPrice(shopcommodity.getSpecial()*carcommodity.getAmount()*shopcommodity.getUnitPrice());//重新计算购物车总价
+		         			  			        	carcommoidtyService.update(carcommodity);//更新购物车商品信息
+		         			  			            handleCarCommodities.add(carcommodity);
+		        			        	       }else{
+  			        			        	    carcommodity.setUnitPrice(shopcommodity.getUnitPrice());//把购物车商品更新为现实价位
+						  			        	carcommodity.setPrice(shopcommodity.getUnitPrice()*carcommodity.getAmount());//重新计算购物车总价
+						  			        	carcommoidtyService.update(carcommodity);//更新购物车商品信息
+						  			        	handleCarCommodities.add(carcommodity);
+ 			        			        	    }
  			        			         }
  			        			         
   			        			    	 

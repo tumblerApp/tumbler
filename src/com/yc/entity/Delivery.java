@@ -35,7 +35,7 @@ public class Delivery {
 	private String endorse;//背书
 	
 	@Column(unique=true)
-	private String packAgeTpek; //订单号
+	private String packAgeTpek; //运单号
 
 	public DeliveryAddress getAddress() {
 		return address;

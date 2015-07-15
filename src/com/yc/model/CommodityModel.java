@@ -23,6 +23,8 @@ public class CommodityModel {
 	private String describes;
 	
 	private float totalPrice;//总价
+	
+	private int orderFormId;
 
 	public float getPrice() {
 		return price;
@@ -111,5 +113,12 @@ public class CommodityModel {
 	public void setTotalPrice(float totalPrice) {
 		this.totalPrice = totalPrice;
 	}
-	
+
+	public int getOrderFormId() {
+		return orderFormId;
+	}
+
+	public void setOrderFormId(int orderFormId) {
+		this.orderFormId = orderFormId;
+	}
 }

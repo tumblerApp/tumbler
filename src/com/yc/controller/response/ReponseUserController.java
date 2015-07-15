@@ -116,22 +116,43 @@ public class ReponseUserController {
  		ModelMap mode = new ModelMap();
 		AppUser user = appUserService.getUser(userName);
 		mode.put("phone", user.getPhone());
-		if ( user.getStatus() ) {
-			mode.put("status", "already");
-		} else if ( user.getStatus() ) {
-			mode.put("status", "no");
-		}
-		mode.put("userName", user.getUserName());
-		if ( user.getSex().toString().equals("Male") ) {
-			mode.put("sex", "男");
-		} else if ( user.getSex().toString().equals("Female") ) {
-			mode.put("sex", "女");
+		if ( user.getStatus() != null ) {
+			if ( user.getStatus() ) {
+				mode.put("status", "already");
+			} else if ( user.getStatus() ) {
+				mode.put("status", "no");
+			}
 		} else {
-			mode.put("sex", "other");
+			mode.put("status", null);
 		}
-		mode.put("birthday", user.getBirthday());
-		mode.put("email", user.getEmail());
 		
+		if ( user.getUserName() != null ) {
+			mode.put("userName", user.getUserName());	
+		} else {
+			mode.put("userName", null);
+		}
+			
+		if ( user.getSex() != null ) {
+			if ( user.getSex().toString().equals("Male") ) {
+				mode.put("sex", "男");
+			} else if ( user.getSex().toString().equals("Female") ) {
+				mode.put("sex", "女");
+			} else {
+				mode.put("sex", "other");
+			}
+		}
+		
+		if ( user.getBirthday() != null ) {
+			mode.put("birthday", user.getBirthday());
+		} else {
+			mode.put("birthday", null);
+		}
+		
+		if ( user.getEmail() != null ) {
+			mode.put("email", user.getEmail());
+		} else {
+			mode.put("email", null);
+		}
 		return mode;
 	}
  	
@@ -177,6 +198,7 @@ public class ReponseUserController {
  	 * @throws Exception
  	 */
  	@RequestMapping(value = "savePersonalInfo", method = { RequestMethod.GET, RequestMethod.POST })
+ 	@ResponseBody
 	public void savePersonalInfo(String nickname, String sex, String birthday
 			,String userName) throws Exception {
 		AppUser user = appUserService.getUser(userName);

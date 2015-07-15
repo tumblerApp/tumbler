@@ -338,7 +338,7 @@ public class OrderFormService extends GenericService<OrderForm> implements IOrde
 	 */
 	@Override
 	public List<OrderForm> findByPhone(String phone) {
-		StringBuffer hql=new StringBuffer("SELECT * FROM orderform LEFT JOIN appuser ON orderform.user_id=appuser.id WHERE appuser.phone='"+phone+"'");
+		StringBuffer hql=new StringBuffer("SELECT orderform.* FROM orderform LEFT JOIN appuser ON orderform.user_id=appuser.id WHERE appuser.phone='"+phone+"'");
 		Query query =  orderFormDao.getEntityManager().createNativeQuery(hql.toString(), OrderForm.class);
 		@SuppressWarnings("unchecked")
 		List<OrderForm> orderFormList=query.getResultList();

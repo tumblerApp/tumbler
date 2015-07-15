@@ -93,9 +93,7 @@ public class ReponseHomeController {
 	//首页内容加载
 	@RequestMapping(value = "category/getShopCommByCate", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> getHome(
-			@RequestParam(value = "cateId") int cateId)
-			throws ServletException, IOException {
+	public Map<String, Object> getHome(int cateId) throws ServletException, IOException {
 		ModelMap mode = new ModelMap();
 
 		List<CommodityModel> commodities = new ArrayList<CommodityModel>();
@@ -227,10 +225,7 @@ public class ReponseHomeController {
 	// 点击首页的更多
 	@RequestMapping(value = "category/getShopCommByCategory", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> reCarCommodity(
-			@RequestParam(value = "cateId") int cateId,
-			@RequestParam(value = "title") String title)
-			throws ServletException, IOException {
+	public Map<String, Object> reCarCommodity(int cateId, String title) throws ServletException, IOException {
 		ModelMap mode = new ModelMap();
 		List<CommodityModel> commodities = new ArrayList<CommodityModel>();
 		List<ShopCommodityModel> shopCommoidties = new ArrayList<ShopCommodityModel>();
@@ -263,8 +258,7 @@ public class ReponseHomeController {
 	// 搜索产品
 	@RequestMapping(value = "home/searchCommodity", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> searchCommodity(
-			@RequestParam(value = "content") String content)
+	public Map<String, Object> searchCommodity(String content)
 			throws ServletException, IOException {
 		ModelMap mode = new ModelMap();
 		List<ShopCommodity> searchResultList = shopCommoidtyService.searchShopComm(content);
@@ -275,6 +269,7 @@ public class ReponseHomeController {
 			item.setCommCode(searchResultList.get(i).getCommCode());
 			item.setDescribes(searchResultList.get(i).getDescribes());
 			item.setUnitPrice(searchResultList.get(i).getUnitPrice());
+			item.setSpecial(searchResultList.get(i).getSpecial());
 			String path = searchResultList.get(i).getShopCommImages().get(0)
 					.getImagePath();
 			item.setShopCommImage(path);
@@ -295,8 +290,7 @@ public class ReponseHomeController {
 	 */
 	@RequestMapping(value = "home/searchShop", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> searchShop(
-			@RequestParam(value = "content") String content)
+	public Map<String, Object> searchShop(String content)
 			throws ServletException, IOException {
 		ModelMap mode = new ModelMap();
 		List<Shop> searchResultList = shopService.searchShop(content);
@@ -508,6 +502,7 @@ public class ReponseHomeController {
 
 	// 删除购物车产品
 	@RequestMapping(value = "shopcar/deleteShopCar", method = RequestMethod.POST)
+	@ResponseBody
 	public void deleteShopCar(Integer id) throws ServletException,
 			IOException {
 		CarCommodity carCommodity = carCommodityService.findById(id);
@@ -540,7 +535,8 @@ public class ReponseHomeController {
 		List<ShopCommodityModel> shopCommodityModelList = new ArrayList<ShopCommodityModel>();
 		List<ShopCommodity> shopCommodityList= new ArrayList<ShopCommodity>();
 		for ( int i = 0; i < lists.size(); i++ ) {			
- 			    List<ShopCommodity> ShopCommoditys=shopCommoidtyService.getAllByShopCategoryID(lists.get(i).getCategoryID(), null);
+ 			    List<ShopCommodity> ShopCommoditys=shopCommoidtyService.
+ 			    		getAllByShopCategoryID(lists.get(i).getCategoryID(), null);
  			   shopCommodityList.addAll(ShopCommoditys);
  		}
         for (int i = 0; i < shopCommodityList.size(); i++) {
@@ -549,6 +545,7 @@ public class ReponseHomeController {
 			   shopCommMode.setCommoidtyName(shopCommodityList.get(i).getCommoidtyName());//商品名称
 			   shopCommMode.setShopCommImage(shopCommodityList.get(i).getShopCommImages().get(0).getImagePath());//图片路径
 			   shopCommMode.setUnitPrice(shopCommodityList.get(i).getUnitPrice());//单价
+			   shopCommMode.setSpecial(shopCommodityList.get(i).getSpecial());
 			   shopCommMode.setDescribes(shopCommodityList.get(i).getDescribes());//描述
 			   shopCommodityModelList.add(shopCommMode);
 		}

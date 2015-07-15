@@ -227,6 +227,7 @@ public class ReponseOrderController {
 			   shopCommMode.setShopCommImage(shopcommodityList.get(i).getShopCommImages().get(0).getImagePath());
 			   shopCommMode.setUnitPrice(shopcommodityList.get(i).getUnitPrice());
 			   shopCommMode.setDescribes(shopcommodityList.get(i).getDescribes());
+			   shopCommMode.setSpecial(shopcommodityList.get(i).getSpecial());
 			   commodity.add(shopCommMode);
 		}
        mode.put("commodity", commodity);
@@ -433,6 +434,7 @@ public class ReponseOrderController {
 	 * @throws ParseException
 	 */
 	@RequestMapping(value = "orderGenerate", method = RequestMethod.POST)
+	@ResponseBody
 	public ModelAndView orderGenerate(Integer destinationId, String ids,String deliveryTime,
 			String transportationStyle,Float deliveryMoney, String userName, Float totalPrice) throws ServletException, IOException{
 		if(destinationId != -1){
@@ -445,9 +447,8 @@ public class ReponseOrderController {
 			delivery.setId(null);
 			Delivery delivery2 = new Delivery();
 			delivery2.setAddress(delivery);
-			delivery2.setEndorse(deliveryTime);
 			delivery2.setDeliveryName(transportationStyle);
-			delivery2.setEndorse(transportationStyle);
+			delivery2.setEndorse(deliveryTime);
 			delivery2.setDeliveryMoney(deliveryMoney);
 			saveOrder(carIds, user, delivery2, totalPrice,mode);
 		}
@@ -527,19 +528,19 @@ public class ReponseOrderController {
  			}
  			//删除下单商品
 		}//while
-		    for (int i = 0; i < CarIds.length; i++) {
-				String carId = CarIds[i];
-				carCommodityService.delete(Integer.parseInt(carId));
+	    for (int i = 0; i < CarIds.length; i++) {
+			String carId = CarIds[i];
+			carCommodityService.delete(Integer.parseInt(carId));
+		}
+	    //用户是否有购物车
+	    BuyCar buycar=buyCarService.getBuyCarByUserName(appuser.getPhone().toString());
+	    if(buycar!=null){
+	    	//如果购物车为空 删除购物车
+			List<CarCommodity> carcomms=buycar.getCarCommodities();
+			if(carcomms.size()==0||carcomms==null){
+				buyCarService.delete(buyCarService.getBuyCarByUserName(appuser.getPhone().toString()).getCatID());
 			}
-		    //用户是否有购物车
-		    BuyCar buycar=buyCarService.getBuyCarByUserName(appuser.getPhone().toString());
-		    if(buycar!=null){
-		    	//如果购物车为空 删除购物车
-				List<CarCommodity> carcomms=buycar.getCarCommodities();
-				if(carcomms.size()==0||carcomms==null){
-					buyCarService.delete(buyCarService.getBuyCarByUserName(appuser.getPhone().toString()).getCatID());
-				}
-		    }
+	    }
 		mode.put("orderformList",orderformList);
 		return mode;
 	}
@@ -576,6 +577,7 @@ public class ReponseOrderController {
 	 * @throws IOException
 	 */
 	@RequestMapping(value = "deleteOrderForm", method = RequestMethod.POST)
+	@ResponseBody
 	public void deleteOrderForm(Integer orderFormId) throws ServletException, IOException {
 		orderFormService.delete(orderFormId);
 	}
@@ -618,6 +620,22 @@ public class ReponseOrderController {
 		 orderFormModel.setCommodities(commodityModelList);
 		 mode.put("orderFormModel", orderFormModel);
 		 return mode;
+	}
+	
+	/**
+	 * 对订单确认收货操作
+	 * @param orderFormId 订单id
+	 * @throws ServletException
+	 * @throws IOException
+	 */
+	@RequestMapping(value = "completeOrderForm", method = RequestMethod.POST)
+	@ResponseBody
+	public void completeOrderForm(Integer orderFormId) throws ServletException, IOException {
+		OrderForm orderForm = orderFormService.findById(orderFormId);
+		if ( orderForm != null ) {
+			orderForm.setOrderstatus(OrderStatus.completionTransaction);
+			orderFormService.update(orderForm);
+		}
 	}
 	
 	private String statusTrans(String status) {
