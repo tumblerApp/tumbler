@@ -111,4 +111,11 @@ public interface IOrderFormService extends IGenericService<OrderForm>{
 	 * @return
 	 */
 	List<OrderForm> findByPhone(String phone);
+	
+	/**
+	 * 通过手机号查询下单到此手机号店铺的订单
+	 * @param phone
+	 * @return
+	 */
+	List<OrderForm> findShopOrderByPhone(String phone);
 }

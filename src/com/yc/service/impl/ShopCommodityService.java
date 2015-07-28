@@ -480,5 +480,4 @@ public class ShopCommodityService extends GenericService<ShopCommodity>
 		List<ShopCommodity> list =  query.getResultList();
 		return list;
 	}
-
 }

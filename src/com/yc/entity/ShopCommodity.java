@@ -29,7 +29,7 @@ public class ShopCommodity {
 	private String commoidtyName;//商品名称
 	
 	@Column(unique=true)
-	private String commItem;// 货号
+	private String commItem;// 条形码
 	
 	@Column
 	private Integer salesVolume; //销量

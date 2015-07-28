@@ -338,9 +338,20 @@ public class OrderFormService extends GenericService<OrderForm> implements IOrde
 	 */
 	@Override
 	public List<OrderForm> findByPhone(String phone) {
-		StringBuffer hql=new StringBuffer("SELECT orderform.* FROM orderform LEFT JOIN appuser ON orderform.user_id=appuser.id WHERE appuser.phone='"+phone+"'");
+		return orderFormDao.getBy("orderUser.phone", phone);
+	}
+
+	/* (non-Javadoc)
+	 * 通过手机获取店铺的订单
+	 * @see com.yc.service.IOrderFormService#findShopOrderByPhone(java.lang.String)
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<OrderForm> findShopOrderByPhone(String phone) {
+		StringBuffer hql=new StringBuffer("SELECT o.* FROM orderform o LEFT JOIN commodity c ON c.orderform_id = o.orderFormID "
+				+ "LEFT JOIN shopcommodity sc ON sc.commCode = c.shopcommodity_id LEFT JOIN shop s ON s.id = sc.shop_id "
+				+ "LEFT JOIN appuser u ON u.shop_id = s.id WHERE u.phone = '"+ phone+"' GROUP BY o.orderFormID");
 		Query query =  orderFormDao.getEntityManager().createNativeQuery(hql.toString(), OrderForm.class);
-		@SuppressWarnings("unchecked")
 		List<OrderForm> orderFormList=query.getResultList();
 		return orderFormList;
 	}

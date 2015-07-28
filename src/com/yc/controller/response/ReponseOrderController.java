@@ -223,6 +223,7 @@ public class ReponseOrderController {
         for (int i = 0; i < shopcommodityList.size(); i++) {
 			   ShopCommodityModel shopCommMode=new ShopCommodityModel();
 			   shopCommMode.setCommCode(shopcommodityList.get(i).getCommCode());
+			   shopCommMode.setCommItem(shopcommodityList.get(i).getCommItem());
 			   shopCommMode.setCommoidtyName(shopcommodityList.get(i).getCommoidtyName());
 			   shopCommMode.setShopCommImage(shopcommodityList.get(i).getShopCommImages().get(0).getImagePath());
 			   shopCommMode.setUnitPrice(shopcommodityList.get(i).getUnitPrice());
@@ -435,8 +436,8 @@ public class ReponseOrderController {
 	 */
 	@RequestMapping(value = "orderGenerate", method = RequestMethod.POST)
 	@ResponseBody
-	public ModelAndView orderGenerate(Integer destinationId, String ids,String deliveryTime,
-			String transportationStyle,Float deliveryMoney, String userName, Float totalPrice) throws ServletException, IOException{
+	public ModelAndView orderGenerate(Integer destinationId, String ids,String deliveryTime,String transportationStyle,
+			Float deliveryMoney, String userName, Float totalPrice, String page) throws ServletException, IOException{
 		if(destinationId != -1){
 			String[] carIds = ids.split(",");
 			ModelMap mode = new ModelMap();
@@ -450,31 +451,53 @@ public class ReponseOrderController {
 			delivery2.setDeliveryName(transportationStyle);
 			delivery2.setEndorse(deliveryTime);
 			delivery2.setDeliveryMoney(deliveryMoney);
-			saveOrder(carIds, user, delivery2, totalPrice,mode);
+			saveOrder(carIds, user, delivery2, totalPrice, page, mode);
 		}
 		return null;
 	}
 	
-	private ModelMap saveOrder(String[] CarIds,AppUser appuser,Delivery delivery,Float totalPrice,
-			ModelMap mode) throws ServletException, IOException{
+	private ModelMap saveOrder(String[] carIds,AppUser appuser,Delivery delivery,Float totalPrice,
+			String page, ModelMap mode) throws ServletException, IOException{
 		List<Commodity> commodities = new ArrayList<Commodity>();//存放所有的commodity集合
 		List<OrderForm> orderformList=new ArrayList<OrderForm>();//存放生成的orderform集合
- 		for (int i = 0; i < CarIds.length; i++) {
- 			if(!CarIds[i].equals("")){
- 				Commodity commodity=new Commodity();
- 				int carId = Integer.parseInt(CarIds[i]);
- 				CarCommodity carCommodity=carCommodityService.findById(carId);
- 				commodity.setShopCommodity(carCommodity.getShopCommodity());
- 				commodity.setShopcategory(carCommodity.getShopCommodity().getShopCategory());
- 				commodity.setSeller(carCommodity.getShop());
- 				commodity.setWeight(carCommodity.getShopCommodity().getProbablyWeight()*carCommodity.getAmount());
- 				commodity.setCommSpec(carCommodity.getShopCommodity().getCommsPecs().getCommSpec());//添加规格信息 
- 				commodity.setQuantity(carCommodity.getAmount());
- 				commodity.setPrice(carCommodity.getUnitPrice());
- 				commodity.setMoney(carCommodity.getPrice());
- 				commodities.add(commodity);
- 			}
+		if ( "order".equals(page) ) {
+			for (int i = 0; i < carIds.length; i++) {
+	 			if(!carIds[i].equals("")){
+	 				Commodity commodity=new Commodity();
+	 				int carId = Integer.parseInt(carIds[i]);
+	 				CarCommodity carCommodity=carCommodityService.findById(carId);
+	 				commodity.setShopCommodity(carCommodity.getShopCommodity());
+	 				commodity.setShopcategory(carCommodity.getShopCommodity().getShopCategory());
+	 				commodity.setSeller(carCommodity.getShop());
+	 				commodity.setWeight(carCommodity.getShopCommodity().getProbablyWeight()*carCommodity.getAmount());
+	 				commodity.setCommSpec(carCommodity.getShopCommodity().getCommsPecs().getCommSpec());//添加规格信息 
+	 				commodity.setQuantity(carCommodity.getAmount());
+	 				commodity.setPrice(carCommodity.getUnitPrice());
+	 				commodity.setMoney(carCommodity.getPrice());
+	 				commodities.add(commodity);
+	 			}
+			}
+		} else if ( "quickOrder".equals(page) ) {
+			Commodity commodity=new Commodity();
+			int commCode = Integer.parseInt(carIds[0]);
+			ShopCommodity shopCommodity = shopCommoidtyService.findById(commCode);
+			int num = 0;
+			if ( shopCommodity.getIsAcitvity() ) {
+				num = (int) (totalPrice/shopCommodity.getSpecialPrice());
+			} else {
+				num = (int) (totalPrice/(shopCommodity.getUnitPrice()*shopCommodity.getSpecial()));
+			}
+			commodity.setShopCommodity(shopCommodity);
+			commodity.setShopcategory(shopCommodity.getShopCategory());
+			commodity.setSeller(shopCommodity.getBelongTo());
+			commodity.setWeight(shopCommodity.getProbablyWeight()*num);
+			commodity.setCommSpec(shopCommodity.getCommsPecs().getCommSpec());//添加规格信息 
+			commodity.setQuantity(num);
+			commodity.setPrice(shopCommodity.getUnitPrice());
+			commodity.setMoney(totalPrice);
+			commodities.add(commodity);
 		}
+ 		
 		while( commodities.size() > 0 ) {
 			List<Commodity> list = new ArrayList<Commodity>();//存放分组后的commodity集合
 			list.add(commodities.get(0));
@@ -528,19 +551,22 @@ public class ReponseOrderController {
  			}
  			//删除下单商品
 		}//while
-	    for (int i = 0; i < CarIds.length; i++) {
-			String carId = CarIds[i];
-			carCommodityService.delete(Integer.parseInt(carId));
-		}
-	    //用户是否有购物车
-	    BuyCar buycar=buyCarService.getBuyCarByUserName(appuser.getPhone().toString());
-	    if(buycar!=null){
-	    	//如果购物车为空 删除购物车
-			List<CarCommodity> carcomms=buycar.getCarCommodities();
-			if(carcomms.size()==0||carcomms==null){
-				buyCarService.delete(buyCarService.getBuyCarByUserName(appuser.getPhone().toString()).getCatID());
+		
+		if ( "order".equals(page) ) {
+			for (int i = 0; i < carIds.length; i++) {
+				String carId = carIds[i];
+				carCommodityService.delete(Integer.parseInt(carId));
 			}
-	    }
+		    //用户是否有购物车
+		    BuyCar buycar=buyCarService.getBuyCarByUserName(appuser.getPhone().toString());
+		    if(buycar!=null){
+		    	//如果购物车为空 删除购物车
+				List<CarCommodity> carcomms=buycar.getCarCommodities();
+				if(carcomms.size()==0||carcomms==null){
+					buyCarService.delete(buyCarService.getBuyCarByUserName(appuser.getPhone().toString()).getCatID());
+				}
+		    }
+		} 
 		mode.put("orderformList",orderformList);
 		return mode;
 	}
@@ -553,18 +579,40 @@ public class ReponseOrderController {
 	 */
 	@RequestMapping(value = "searchOrderForm", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> searchOrderForm(String userName) throws ServletException, IOException {
-		 ModelMap mode=new ModelMap();
-		  List<OrderForm> orderFormList=orderFormService.findByPhone(userName);
+	public Map<String, Object> searchOrderForm(String userName,String page, int currentPos) throws ServletException, IOException {
+		  ModelMap mode=new ModelMap();
 		  List<OrderFormModel> orderFormModelList=new ArrayList<OrderFormModel>();
+		  List<OrderForm> orderFormList = new ArrayList<OrderForm>();
+		  if ( "user".equals(page) ) {
+			  orderFormList = orderFormService.findByPhone(userName);
+		  } else if ( "shop".equals(page) ){
+			  orderFormList = orderFormService.findShopOrderByPhone(userName);
+		  }
 		  for (int i = 0; i < orderFormList.size(); i++) {
-			  OrderFormModel orderFormModel=new OrderFormModel();
-			  orderFormModel.setId(orderFormList.get(i).getOrderFormID());
-			  orderFormModel.setImagePath(orderFormList.get(i).getCommodities().get(0).getShopCommodity().getShopCommImages().get(0).getImagePath());
-			  orderFormModel.setOrderFormDate(orderFormList.get(i).getOrderDate());
-			  orderFormModel.setOrderFormStatus(statusTrans(orderFormList.get(i).getOrderstatus().toString()));
-			  orderFormModel.setTotalPrice(orderFormList.get(i).getTotalPrice());
-			  orderFormModelList.add(orderFormModel);
+			  boolean flag = true;
+			  if ( currentPos == 2 ) {
+				  if (!"waitDelivery".equals(orderFormList.get(i).getOrderstatus().toString())) {
+					  flag = false;
+				  }
+			  } else if ( currentPos == 3 ) {
+				  if (!"transitGoods".equals(orderFormList.get(i).getOrderstatus().toString())) {
+					  flag = false;
+				  }
+			  } else if ( currentPos == 4 ) {
+				  if (!"completionTransaction".equals(orderFormList.get(i).getOrderstatus().toString())) {
+					  flag = false;
+				  }
+			  }
+			  
+			  if ( flag ) {
+				  OrderFormModel orderFormModel=new OrderFormModel();
+				  orderFormModel.setId(orderFormList.get(i).getOrderFormID());
+				  orderFormModel.setImagePath(orderFormList.get(i).getCommodities().get(0).getShopCommodity().getShopCommImages().get(0).getImagePath());
+				  orderFormModel.setOrderFormDate(orderFormList.get(i).getOrderDate()+orderFormList.get(i).getOrderTime());
+				  orderFormModel.setOrderFormStatus(statusTrans(orderFormList.get(i).getOrderstatus().toString()));
+				  orderFormModel.setTotalPrice(orderFormList.get(i).getTotalPrice());
+				  orderFormModelList.add(orderFormModel);
+			  }
 		  }
 		  mode.put("orderFormModelList", orderFormModelList);
 		  return mode;
@@ -579,7 +627,15 @@ public class ReponseOrderController {
 	@RequestMapping(value = "deleteOrderForm", method = RequestMethod.POST)
 	@ResponseBody
 	public void deleteOrderForm(Integer orderFormId) throws ServletException, IOException {
-		orderFormService.delete(orderFormId);
+		OrderForm orderForm = orderFormService.findById(orderFormId);
+		if ( orderForm != null ) {
+			for ( int i = 0; i < orderForm.getCommodities().size(); i++ ) {
+				Commodity commodity = orderForm.getCommodities().get(i);
+				commodity.setOrderNumber(null);
+				commodityService.update(commodity);
+			}
+			orderFormService.delete(orderFormId);
+		}
 	}
 	
 	/**

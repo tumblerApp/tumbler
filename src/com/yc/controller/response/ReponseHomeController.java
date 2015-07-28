@@ -552,4 +552,21 @@ public class ReponseHomeController {
         mode.put("shopCommodityModelList", shopCommodityModelList);
 		return mode;
 	}
+	
+	/**
+	 * 商品状态转换存储
+	 * @param commCode 商品id
+	 * @param status 是否上架状态
+	 * @throws ServletException
+	 * @throws IOException
+	 */
+	@RequestMapping(value = "saveCommStatus", method = RequestMethod.POST)
+	@ResponseBody
+	public void saveCommStatus(Integer commCode, Boolean status) throws ServletException, IOException {
+		ShopCommodity commodity = shopCommoidtyService.findById(commCode);
+		if ( commodity != null ) {
+			commodity.setShelves(status);
+			shopCommoidtyService.update(commodity);
+		}
+	}
 }

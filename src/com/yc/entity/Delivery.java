@@ -16,7 +16,7 @@ public class Delivery {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Integer id;
+	private Integer deliveryId;
 	
 	@Column
 	private String deliveryName;//运输方式  EMS 圆通  顺风 
@@ -77,12 +77,12 @@ public class Delivery {
 		this.orderForm = orderForm;
 	}
 
-	public Integer getId() {
-		return id;
+	public Integer getDeliveryId() {
+		return deliveryId;
 	}
 
-	public void setId(Integer id) {
-		this.id = id;
+	public void setDeliveryId(Integer deliveryId) {
+		this.deliveryId = deliveryId;
 	}
 
 	public String getDeliveryName() {

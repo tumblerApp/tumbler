@@ -212,16 +212,26 @@ public class ReponseUserController {
 		appUserService.update(user);
 	}
  	
+ 	/**
+ 	 * 用户修改密码
+ 	 * @param previousPsw 原密码
+ 	 * @param currentPsw 当前密码
+ 	 * @param userName 手机号
+ 	 * @return
+ 	 * @throws Exception
+ 	 */
  	@RequestMapping(value = "modifyPassword", method = { RequestMethod.GET, RequestMethod.POST })
  	@ResponseBody
 	public Map<String, Object> modifyPassword(String previousPsw, String currentPsw,
 			String userName) throws Exception {
  		ModelMap mode = new ModelMap();
 		AppUser user = appUserService.getUser(userName);
-		if ( !previousPsw.equals(user.getPassword()) ) {
+		String previousPswMD5 = KL(JM(KL(MD5(previousPsw))));
+		String currentPswMD5 = KL(JM(KL(MD5(currentPsw))));
+		if ( !previousPswMD5.equals(user.getPassword()) ) {
 			mode.put("message", "pswError");
 		} else {
-			user.setPassword(currentPsw);
+			user.setPassword(currentPswMD5);
 			appUserService.update(user);
 			mode.put("message", "success");
 		}

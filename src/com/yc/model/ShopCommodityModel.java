@@ -41,6 +41,8 @@ public class ShopCommodityModel {
 	private int activityAmount = 0; //参加活动的数量
 	
 	private Float special = 1f; //打几折
+	
+	private Boolean shelves = true;
 
 	public int getCommCode() {
 		return commCode;
@@ -192,5 +194,13 @@ public class ShopCommodityModel {
 
 	public void setShopName(String shopName) {
 		this.shopName = shopName;
+	}
+
+	public Boolean getShelves() {
+		return shelves;
+	}
+
+	public void setShelves(Boolean shelves) {
+		this.shelves = shelves;
 	}
 }

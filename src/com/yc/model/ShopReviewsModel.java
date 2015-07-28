@@ -2,6 +2,7 @@ package com.yc.model;
 
 public class ShopReviewsModel {
 	//评论等级  评论内容  用户名  （日期+时间）  追评 卖家回复 卖家追评回复
+	private int reviewId;
 	private String userName;
     private String reviewsRan;
     private String date;
@@ -51,5 +52,11 @@ public class ShopReviewsModel {
 	}
 	public void setBusinessreply(String businessreply) {
 		this.businessreply = businessreply;
+	}
+	public int getReviewId() {
+		return reviewId;
+	}
+	public void setReviewId(int reviewId) {
+		this.reviewId = reviewId;
 	}
 }
